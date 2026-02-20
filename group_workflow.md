@@ -1,15 +1,19 @@
 # Group Workflow using GitHub
 
 Project setup & workflow using PyCharm IDE (preferred) or terminal.
+- a free copy of the PyCharm IDE can be downloaded from [www.jetbrains.com/pycharm/](https://www.jetbrains.com/pycharm/?source=google&medium=cpc&campaign=amer_en_us_cst_pycharm_branded&term=pycharm&content=785237935145&gad_source=1&gad_campaignid=14127625568&gclid=Cj0KCQiAhtvMBhDBARIsAL26pjHhjbJkNzopV1gWkEs8WUaF9MlXT0p7-ykmq6Wbmt1SCWOrWTQclMEaAtxhEALw_wcB), no subscription required!
+
 ## Project Setup
-1. Go to the GitHub repository and grab the HTTPS url
-2. On the welcome screen of PyCharm click "Clone Repository" (or "File>Project from Version Control")
-3. Paste the repository URL & select a local folder, then click "Clone"
+1. Go to the GitHub repository and click `Clone` > `HTTPS` and copy the URL
+2. On the welcome screen of PyCharm click "Clone Repository" or navigate to `File > Project from Version Control`
+3. Paste the repository URL into the first box & select a local folder to clone to
+4. click `Clone`
 
 PyCharm will now have your project locally, with Git tracking enabled.
 - side bar should show a `Project` tab (Ctrl+Shift+E) and a `Commit` tab (Alt+0)
-- the project directory should include a `test.py` file; feel free to practice commit & pushing with this file following the workflow below.
-- bottom left should have a `Git` button (Ctrl+Shift+G) which displays Local & Remote branches (we should be )
+- the project directory should include a `test.py` file; feel free to practice commit & pushing with this file following the workflow below
+- bottom left should have a `Git` button (Ctrl+Shift+G) which displays Local & Remote branches with VCS options. A similar `VCS` tab should be accessible at the top of the IDE
+- Changes are commited to your local branch (likely `main`) and then pushed to the remote `origin/main`
 
 If using terminal, you may need an SSH key if using SSH instead of HTTPS. We will primarily be using the free version of PyCharm for this project.
 
