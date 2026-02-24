@@ -107,6 +107,16 @@ def run_simulations():
 
 
 #*******************************************
+#Short helper function used for readability
+#Returns probability of grabbing a whole pill
+#Parameters are the number of whole and half pills
+def get_whole_probability(whole_total, half_total):
+    return whole_total/(whole_total + half_total)
+
+#*******************************************
+
+
+#*******************************************
 #Run a single simulation of emptying the pill bottle.
 #The parameter 'Sim' represents the current simulation being run
 #Globals Used: N, simulation_totals, last_whole_days, first_half_days
@@ -117,7 +127,7 @@ def single_simulation(sim = 0):
     half_total = 0
 
     for day in range(1, 2*N + 1):
-        whole_probability = (whole_total/(whole_total + half_total))
+        whole_probability = get_whole_probability(whole_total, half_total)
         pill_grab = np.random.random()
         if pill_grab < whole_probability:
             whole_total -= 1
