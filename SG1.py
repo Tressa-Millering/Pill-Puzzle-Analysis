@@ -32,6 +32,12 @@
 #           - Used as reference on how to divide numpy arrays more efficiently
 #       https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html
 #           - Used as reference for numpy random function
+#       https://docs.python.org/3/library/functions.html#int
+#           - Used as reference on converting string input to int for integer verification (rejects float strings)
+#       https://docs.python.org/3/tutorial/inputoutput.html
+#           - Used for referencing formatted string literals
+#       https://docs.python.org/3/tutorial/errors.html
+#           - Used as reference for try-catch error exception in verify_input helper function
 
 #*************************************************************************************************
 
@@ -84,6 +90,8 @@ def initialize_arrays():
     simulation_totals = np.array(np.zeros((2*N + 1, 2), dtype=int))
     last_whole_days = np.array(np.zeros((R,1), dtype=int))
     first_half_days = np.array(np.zeros((R,1), dtype=int))
+
+    simulation_totals[0][0] = N   # Day 0: start with N whole pills
 
 #*******************************************
 
@@ -148,14 +156,54 @@ def single_simulation(sim = 0):
 #*******************************************
 
 
+# *******************************************
+# Helper function used to read input for variables given a prompt & verifies the input is within bounds [1,upper_limit]
+# Prompt must be provided from the caller (as used in get_N and get_R) & repeats if input is invalid
+# Loops with explanation output if the input is not within bounds [1,upper_limit] or raised an error (non-integer)
+# Returns the input value to caller if the above checks passed
+def verify_input(prompt, upper_limit):
+    while True:
+        try:
+            value = int(input(prompt))
+            if 1 <= value <= upper_limit:
+                return value
+            else:
+                print(f"Enter a number between 1 and {upper_limit}, try again.")
+        except ValueError:
+            print("Must enter a whole number, try again.")
+
+# *******************************************
+
+
+#*******************************************
+# Prompts the user to provide a number of pills N to start the simulation with
+# uses helper function verify_input with an appropriate prompt for N as well as an upper limit of 1000
+def get_N():
+    print("Provide a number of N whole pills to start the simulation with.")
+    pills = verify_input("Enter N (1-1000): ", 1000)
+    return pills
+
+#*******************************************
+
+
+# *******************************************
+# Prompts the user to provide a number of repetitions R to run the simulation for
+# uses helper function verify_input with an appropriate prompt for R as well as an upper limit of 10000
+def get_R():
+    print("Provide a number of R repetitions to run the simulation for.")
+    repetitions = verify_input("Enter R (1-10000): ", 10000)
+    return repetitions
+
+# *******************************************
+
 
 #*******************************************
 #main (obviously)
 def main():
     print("Main function")
     global N, R
-    N = 10
-    R = 10
+    N = get_N()
+    R = get_R()
     initialize_arrays()
     run_simulations()
 
