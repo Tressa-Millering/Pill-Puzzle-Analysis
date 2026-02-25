@@ -91,7 +91,6 @@ def initialize_arrays():
     last_whole_days = np.array(np.zeros((R,1), dtype=int))
     first_half_days = np.array(np.zeros((R,1), dtype=int))
 
-    simulation_totals[0][0] = N   # Day 0: start with N whole pills
 
 #*******************************************
 
@@ -133,6 +132,8 @@ def single_simulation(sim = 0):
     last_whole_out = False
     whole_total = N
     half_total = 0
+
+    simulation_totals[0][0] += N   # Day 0: start with N whole pills
 
     for day in range(1, 2*N + 1):
         whole_probability = get_whole_probability(whole_total, half_total)
