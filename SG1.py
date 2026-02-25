@@ -208,6 +208,11 @@ def main():
     initialize_arrays()
     run_simulations()
 
+    from statistics import compute_most_likely_depletion_day
+
+    most_likely = compute_most_likely_depletion_day(last_whole_days)
+    print("Most likely depletion day:", most_likely)
+
 #*******************************************
 
 
