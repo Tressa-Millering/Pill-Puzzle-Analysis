@@ -123,6 +123,7 @@ def get_whole_probability(whole_total, half_total):
 #*******************************************
 
 
+
 #*******************************************
 #Run a single simulation of emptying the pill bottle.
 #The parameter 'Sim' represents the current simulation being run
@@ -157,6 +158,59 @@ def single_simulation(sim = 0):
 #*******************************************
 
 
+
+#REMOVE THIS NOTE LATER
+#This was Riddhi's function from statistics.py
+#Tressa moved it here because we need to keep everything
+#in the same file. Renamed stuff just because it can
+#be used generically as a mode function
+
+#*******************************************
+#Calculates array mode
+#Primarily used for last whole day and first
+#half day calculation
+def array_mode(array):
+    flat_array = array.flatten()
+
+    values, counts = np.unique(flat_array, return_counts=True)
+    mode = values[np.argmax(counts)]
+
+    return mode
+
+#********************************************
+
+
+
+#********************************************
+#Prints min, mean, mode, and max of an array
+#Used primarily for question 2
+def array_stats(array):
+    flat_array = array.flatten()
+    print("\tEarliest Day:", np.min(array))
+    print("\tAverage Day: ", np.mean(array))
+    print("\tSmallest Mode Day: ", array_mode(array))
+    print("\tLatest Day:  ", np.max(array))
+
+#********************************************
+
+
+#********************************************
+#Output statistics related to question 2
+#Globals Used: last_whole_days, first_half_days
+def question2_stats():
+    print("Question 2 statistics:\n-------------------------\n")
+    print("LAST WHOLE DAY ANALYSIS\n")
+    array_stats(last_whole_days)
+    #Prompt y/n to see histogram of last whole
+
+    print("\n\nFIRST HALF DAY ANALYSIS\n")
+    array_stats(first_half_days)
+    #Prompt y/n to see histogram of first half
+
+#********************************************
+
+
+
 # *******************************************
 # Helper function used to read input for variables given a prompt & verifies the input is within bounds [1,upper_limit]
 # Prompt must be provided from the caller (as used in get_N and get_R) & repeats if input is invalid
@@ -176,6 +230,7 @@ def verify_input(prompt, upper_limit):
 # *******************************************
 
 
+
 #*******************************************
 # Prompts the user to provide a number of pills N to start the simulation with
 # uses helper function verify_input with an appropriate prompt for N as well as an upper limit of 1000
@@ -185,6 +240,7 @@ def get_N():
     return pills
 
 #*******************************************
+
 
 
 # *******************************************
@@ -198,6 +254,7 @@ def get_R():
 # *******************************************
 
 
+
 #*******************************************
 #main (obviously)
 def main():
@@ -208,10 +265,7 @@ def main():
     initialize_arrays()
     run_simulations()
 
-    from statistics import compute_most_likely_depletion_day
-
-    most_likely = compute_most_likely_depletion_day(last_whole_days)
-    print("Most likely depletion day:", most_likely)
+    question2_stats()
 
 #*******************************************
 
