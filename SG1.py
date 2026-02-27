@@ -42,6 +42,7 @@
 #*************************************************************************************************
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 #********************************************
 #Global variables/data structures
@@ -252,7 +253,116 @@ def get_R():
     return repetitions
 
 # *******************************************
+# -------------------------
+# Q1 FUNCTIONS
+# -------------------------
+def plot_q1_averages():
+    days = np.arange(0, 2*N + 1)
 
+    avg_whole = simulation_averages[:, 0]
+    avg_half = simulation_averages[:, 1]
+
+    plt.figure()
+    plt.plot(days, avg_whole, label="Average Whole Pills")
+    plt.plot(days, avg_half, label="Average Half Pills")
+
+    plt.xlabel("Day")
+    plt.ylabel("Average Pill Count")
+    plt.title("Average Whole and Half Pills Per Day")
+    plt.legend()
+    plt.show()
+
+def q1_console():
+    while True:
+        day = int(input("Enter a day (0 to {}), or -1 to return: ".format(2*N)))
+
+        if day == -1:
+            break
+
+        if 0 <= day <= 2*N:
+            print("Day", day)
+            print("Average Whole Pills:", simulation_averages[day][0])
+            print("Average Half Pills:", simulation_averages[day][1])
+        else:
+            print("Invalid day.")
+# -------------------------
+# Q2 FUNCTIONS
+# -------------------------
+
+def plot_q2_histograms():
+    plt.figure()
+    plt.hist(last_whole_days.flatten(), bins=20)
+    plt.title("Histogram of Last Whole Pill Day")
+    plt.xlabel("Day")
+    plt.ylabel("Frequency")
+    plt.show()
+
+    plt.figure()
+    plt.hist(first_half_days.flatten(), bins=20)
+    plt.title("Histogram of First Half Pill Day")
+    plt.xlabel("Day")
+    plt.ylabel("Frequency")
+    plt.show()
+
+def q2_console():
+    last_mode = array_mode(last_whole_days)
+    first_mode = array_mode(first_half_days)
+
+    print("Whole pills most often ran out on day:", last_mode)
+    print("Half pills were most often first taken on day:", first_mode)
+
+    input("Press ENTER to return...")
+
+# -------------------------
+# Q3 FUNCTIONS
+# -------------------------
+
+def plot_q3_regression():
+    days = np.arange(0, 2*N + 1)
+    avg_whole = simulation_averages[:, 0]
+
+    # Scatter
+    plt.figure()
+    plt.scatter(days, avg_whole)
+
+    # Line of best fit
+    m, b = np.polyfit(days, avg_whole, 1)
+    plt.plot(days, m*days + b)
+
+    plt.xlabel("Day")
+    plt.ylabel("Average Whole Pills")
+    plt.title("Whole Pills Decrease Over Time")
+    plt.show()
+
+    print("Whole pills were taken at a rate of approximately",
+          round(abs(m), 4), "pills per day.")
+    input("Press ENTER to return...")
+
+# -------------------------
+# RESULTS MENU
+# -------------------------
+def results_menu():
+    while True:
+        print("\nResults Menu")
+        print("1 - Q1 Averages")
+        print("2 - Q2 Statistics")
+        print("3 - Q3 Regression")
+        print("0 - Exit")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            plot_q1_averages()
+            q1_console()
+        elif choice == "2":
+            plot_q2_histograms()
+            q2_console()
+        elif choice == "3":
+            plot_q3_regression()
+        elif choice == "0":
+            break
+        else:
+            print("Invalid option.")
 
 
 #*******************************************
@@ -266,6 +376,7 @@ def main():
     run_simulations()
 
     question2_stats()
+    results_menu()
 
 #*******************************************
 
