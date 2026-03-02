@@ -131,7 +131,6 @@ def get_whole_probability(whole_total, half_total):
 #Globals Used: N, simulation_totals, last_whole_days, first_half_days
 def single_simulation(sim = 0):
     first_half_out = False
-    last_whole_out = False
     whole_total = N
     half_total = 0
 
@@ -143,12 +142,11 @@ def single_simulation(sim = 0):
         if pill_grab < whole_probability:
             whole_total -= 1
             half_total += 1
-            if whole_total == 0 and not last_whole_out:
-                last_whole_out = True
+            if whole_total == 0:
                 last_whole_days[sim] = day
         else:
             half_total -= 1
-            if half_total == 1 and not first_half_out:
+            if not first_half_out:
                 first_half_out = True
                 first_half_days[sim] = day
 
