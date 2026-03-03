@@ -366,7 +366,9 @@ def results_menu():
 #*******************************************
 #main (obviously)
 def main():
-    print("Main function")
+    print("======== Welcome to the Pill Program! ========")
+    print("This program will create a pill bottle with 'N' pills and simulate emptying it 'R' times!\n"
+          "Statistics will be provided regarding the contents of the bottle for the simulation.\n")
     global N, R
     N = get_N()
     R = get_R()
