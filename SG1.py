@@ -151,7 +151,10 @@ def loading_screen(sim, R):
     filled = int(progress * bar_length)
     empty = bar_length - filled
 
+    bar = "█" * filled + "░" * empty
+    percent = int(progress * 100)
 
+    print(f"\r{bar}] {percent}%", end="")
 
 #*******************************************
 #Runs R simulations, outputting a loading screen as it goes
