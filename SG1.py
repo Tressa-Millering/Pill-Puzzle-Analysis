@@ -369,7 +369,7 @@ def results_menu():
         print("1 - Q1 Averages")
         print("2 - Q2 Statistics")
         print("3 - Q3 Regression")
-        print("0 - Exit")
+        print("Enter - Exit")
 
         choice = input("Choose an option: ")
 
@@ -381,7 +381,7 @@ def results_menu():
             q2_console()
         elif choice == "3":
             plot_q3_regression()
-        elif choice == "0":
+        elif choice == "":
             break
         else:
             print("Invalid option.")
