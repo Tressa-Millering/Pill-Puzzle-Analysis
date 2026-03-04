@@ -340,12 +340,12 @@ def plot_q1_averages():
 def q1_console():
     # opening prompt for Q1
     print(f"Each simulation spanned {2*N} days. To see results for average half/whole pills on a given day, follow the\n"
-          f" prompt below. Enter '-1' to return to the results menu.\n")
+          f" prompt below. Press 'ENTER' to return to the results menu.\n")
 
     # loop until user presses enter to exit
     while True:
         # prompt user for a day between 0 and 2*N, press 'ENTER' to exit
-        day_prompt = f"Enter a Day (0..{2*N}), or press 'ENTER' to return: "
+        day_prompt = f"Enter a Day (0..{2*N}), or press 'ENTER' (leave blank) to return: "
         day = verify_input(day_prompt, 2*N, True)
 
         match day:
@@ -419,11 +419,11 @@ def results_menu():
     while True:
         # opening prompt
         print("""====================== Results Menu ======================
-Select a question below (1..3) to see the simulation's results, or '0' to EXIT:
+Select a question below (1..3) to see the simulation's results:
   1.) What are the expected number of whole & half pills on a given day?
   2.) Which day is most likely we run out of whole pills & which day is most likely the first half pill is taken?
   3.) At what average rate were whole pills taken per day?
-  Or press 'ENTER' to exit\n""")
+  Or press 'ENTER' to exit (leave blank)\n""")
 
         # get input using verify_input helper with prompt for options 0..3
         choice = verify_input("Enter an option (1..3): ",3, True)
