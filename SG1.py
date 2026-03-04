@@ -290,9 +290,9 @@ def verify_input(prompt, upper_limit, allow_exit=False):
             if 1 <= value <= upper_limit:
                 return value
             else:
-                print(f"Enter a number between 1 and {upper_limit}, try again.")
+                print(f"Input must be between 1 and {upper_limit}, try again.")
         except ValueError:
-            print("Input must contain a number, try again.")
+            print("Input must be numeric, try again.")
 # *******************************************
 
 
@@ -339,13 +339,13 @@ def plot_q1_averages():
 
 def q1_console():
     # opening prompt for Q1
-    print(f"Each simulation spanned {2*N} days. To see results for average half/whole pills on a given day, follow the\n"
-          f" prompt below. Press 'ENTER' to return to the results menu.\n")
+    print(f"Each simulation started with {N} whole pills on day 0 and lasted {2*N} days. To see results for average"
+          f"\n half/whole pills on a given day, follow the prompt below. Press 'ENTER' to return to the results menu.\n")
 
     # loop until user presses enter to exit
     while True:
         # prompt user for a day between 0 and 2*N, press 'ENTER' to exit
-        day_prompt = f"Enter a Day (0..{2*N}), or press 'ENTER' (leave blank) to return: "
+        day_prompt = f"Enter a Day (1..{2*N}), or press 'ENTER' (leave blank) to return: "
         day = verify_input(day_prompt, 2*N, True)
 
         match day:
