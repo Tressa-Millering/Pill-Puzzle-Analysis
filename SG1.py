@@ -18,7 +18,14 @@
 #        CS 4500 - Intro to the Software Profession
 #
 #   Program Explanation -
-#       TO DO
+#       This program is a simulation of the "Pill Puzzle". The user may select values for 'N' and 'R',
+#       where 'N' is the number of pills in the bottle and R is the number of times the emptying of the bottle is
+#       simulated.
+#       Statistics are provided regarding the contents of the bottle over time, such as: a plot of the average whole and
+#       half pills per day, a plot showing the decrease of whole pills over time, and a histogram showing when the first
+#       half pill and the last whole pill is used.
+#       Numpy and MatplotLib are used to visualize the statistics.
+#       np.random.random(), from Numpy, is used for random number generation.
 #
 #   Outside Sources:   NOTE: apparently we have to include what we used it for
 #                            "...and give at least a little information about what you found at each resource."
@@ -231,13 +238,17 @@ def question2_stats():
 def verify_input(prompt, upper_limit):
     while True:
         try:
-            value = int(input(prompt))
+            user_input = input(prompt)
+            if '.' in user_input:
+                print("Input must not be a decimal, try again.")
+                continue
+            value = int(user_input)
             if 1 <= value <= upper_limit:
                 return value
             else:
                 print(f"Enter a number between 1 and {upper_limit}, try again.")
         except ValueError:
-            print("Must enter a whole number, try again.")
+            print("Input must contain a number, try again.")
 
 # *******************************************
 
