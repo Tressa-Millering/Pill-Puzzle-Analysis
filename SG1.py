@@ -275,17 +275,24 @@ def question2_stats():
 # Prompt must be provided from the caller (as used in get_N and get_R) & reprinted if input is invalid
 # Loops & outputs a usage message if the input is not within bounds [lower_limit,upper_limit] or raised an error (non-integer)
 # Returns the input value to caller if the above checks passed
-def verify_input(prompt, lower_limit, upper_limit):
+def verify_input(prompt, upper_limit, allow_exit=False):
     while True:
         try:
-            value = int(input(prompt))
-            if lower_limit <= value <= upper_limit:
+            user_input = input(prompt)
+
+            if allow_exit and user_input == "":
+                return ""
+
+            if '.' in user_input:
+                print("Input must not be a decimal, try again.")
+                continue
+            value = int(user_input)
+            if 1 <= value <= upper_limit:
                 return value
             else:
-                print(f"Must be a number between {lower_limit} and {upper_limit}, try again.")
+                print(f"Enter a number between 1 and {upper_limit}, try again.")
         except ValueError:
-            print("Must not be a decimal number, try again.")
-
+            print("Input must contain a number, try again.")
 # *******************************************
 
 
@@ -295,7 +302,7 @@ def verify_input(prompt, lower_limit, upper_limit):
 # uses helper function verify_input with an appropriate prompt for N as well as an upper limit of 1000
 def get_N():
     print("Provide a number of N whole pills to start the simulation with.")
-    pills = verify_input("Enter N (1 .. 1000): ", 1, 1000)
+    pills = verify_input("Enter N (1 .. 1000): ", 1000)
     return pills
 
 #*******************************************
@@ -307,7 +314,7 @@ def get_N():
 # uses helper function verify_input with an appropriate prompt for R as well as an upper limit of 10000
 def get_R():
     print("Provide a number of R repetitions to run the simulation for.")
-    repetitions = verify_input("Enter R (1 .. 10000): ", 1, 10000)
+    repetitions = verify_input("Enter R (1 .. 10000): ",10000)
     return repetitions
 
 # *******************************************
@@ -335,14 +342,14 @@ def q1_console():
     print(f"Each simulation spanned {2*N} days. To see results for average half/whole pills on a given day, follow the\n"
           f" prompt below. Enter '-1' to return to the results menu.\n")
 
-    # loop until user enters '-1' to exit
+    # loop until user presses enter to exit
     while True:
-        # prompt user for a day between 0 and 2*N, -1 to exit
-        day_prompt = f"Enter a Day (0..{2*N}), or '-1' to return: "
-        day = verify_input(day_prompt, -1, 2*N)
+        # prompt user for a day between 0 and 2*N, press 'ENTER' to exit
+        day_prompt = f"Enter a Day (0..{2*N}), or press 'ENTER' to return: "
+        day = verify_input(day_prompt, 2*N, True)
 
         match day:
-            case -1:
+            case "":
                 # return user to results menu
                 break
             case _:
@@ -408,22 +415,22 @@ def plot_q3_regression():
 # RESULTS MENU
 # -------------------------
 def results_menu():
-    # loop until user enters '0' to exit
+    # loop until user presses enter to exit
     while True:
         # opening prompt
         print("""====================== Results Menu ======================
 Select a question below (1..3) to see the simulation's results, or '0' to EXIT:
-  0.) Exit Program
   1.) What are the expected number of whole & half pills on a given day?
   2.) Which day is most likely we run out of whole pills & which day is most likely the first half pill is taken?
-  3.) At what average rate were whole pills taken per day?\n""")
+  3.) At what average rate were whole pills taken per day?
+  Or press 'ENTER' to exit\n""")
 
         # get input using verify_input helper with prompt for options 0..3
-        choice = verify_input("Enter an option (0..3): ", 0, 3)
+        choice = verify_input("Enter an option (1..3): ",3, True)
 
         # select appropriate helper to display results
         match choice:
-            case 0:
+            case "":
                 break  # exit menu loop
             case 1:
                 # alert user a graph was generated
