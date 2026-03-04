@@ -141,6 +141,15 @@ def initialize_arrays():
 
 
 #*******************************************
+#Displays a visual progress bar during simulation execution.
+#Called once per simulation inside run_simulations().
+#Calculates percent completion and updates the same console line in-place.
+#Globals Used: None
+def loading_screen(sim, R):
+    bar_length = 30
+    progress = sim / R
+    filled = int(progress * bar_length)
+    empty = bar_length - filled
 
 
 
@@ -149,13 +158,14 @@ def initialize_arrays():
 #Globals Used: R, simulation_totals, simulation_averages
 def run_simulations():
     global simulation_averages
+    print("\nRunning simulations...\n")
+
     for sim in range(0, R):
         single_simulation(sim)
-        #clear screen
-        #loading screen
+        loading_screen(sim + 1, R)  # +1 ensures it reaches 100%
+
     simulation_averages = np.divide(simulation_totals, R)
-    #maybe automatically show plot of averages here?
-    print("Simulations complete!")
+    print("\nSimulations complete!\n")
 
 #*******************************************
 
