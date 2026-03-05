@@ -3,6 +3,7 @@
 #   IDE - Primarily programmed using PyCharm for its
 #         version control tools, later tested in Thonny
 #
+#
 #   Authors -
 #       - Riddhi Acharya
 #       - Zachary Gmyr
@@ -10,12 +11,15 @@
 #       - Tressa Millering
 #       - Devon Schrader
 #
+#
 #   Important Dates -
 #       Program started 02/2/2026
 #       Program submitted 03/10/2026
 #
+#
 #   Course -
 #        CS 4500 - Intro to the Software Profession
+#
 #
 #   Program Explanation -
 #       SG1.py runs a number of 'R' simulations to emulate the "Pill Puzzle" problem for a bottle of 'N' whole pills.
@@ -65,9 +69,8 @@
 #           > Q3: plot showing the decrease of whole pills over time with line of best fit describing rate of reduction
 #
 #
-#   Outside Sources:   NOTE: apparently we have to include what we used it for
-#                            "...and give at least a little information about what you found at each resource."
-#                           So make sure to write that, even if its barely anything.
+#
+#   Outside Sources:
 #
 #       https://www.geeksforgeeks.org/python/global-keyword-in-python/
 #           - Used to verify behaviour and usage of the global keyword
@@ -85,15 +88,33 @@
 #           - Used as reference for try-catch error exception in verify_input helper function
 #       https://www.geeksforgeeks.org/python/triple-quotes-in-python/
 #           - Used for formatting large prompts
-
+#       https://matplotlib.org/stable/plot_types/basic/index.html
+#           - Used for plotting all graphs
+#       https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html
+#           - Used for calculating line of best fit for Q3
+#       https://matplotlib.org/stable/gallery/style_sheets/style_sheets_reference.html
+#           - Used for controlling and picking global style settings of plots
+#       https://matplotlib.org/stable/gallery/color/named_colors.html
+#           - Used to see color options in matplotlib graphs
+#       https://numpy.org/doc/stable/reference/generated/numpy.corrcoef.html
+#           - Used for calculating R^2 value of regression line
+#       https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.suptitle.html
+#           - Used to add subtitle to regression graph
+#       https://www.geeksforgeeks.org/python/how-to-print-superscript-and-subscript-in-python/
+#           - Used to add superscript to R^2 value on regression graph
+#
 #*************************************************************************************************
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-#********************************************
-#Global variables/data structures
 
+
+# ----------------------------------
+# GLOBAL VARIABLES/DATA STRUCTURES
+# ----------------------------------
+
+#********************************************
 #Initialized with dummy values as they are global
 #but unknown until runtime.
 
@@ -106,12 +127,21 @@ simulation_totals = None    #Keeps a running total of whole pill and half pill c
 simulation_averages = None  #Stores the average whole/half pill total after finishing the simulations
 last_whole_days = None      #Keeps track of each day that whole pills ran out
 first_half_days = None      #Keeps track of each day that half pills were selected
+
+#Sets global style settings for later plots
+plt.style.use('bmh')
 #********************************************
 
 
 
+
+
+# -------------------------
+# GENERAL USE FUNCTIONS
+# -------------------------
+
 #********************************************
-#FOR DEBUGGING, WILL REMOVE BEFORE SUBMITTING
+#FOR DEBUGGING
 
 #print one of the arrays in a single line
 #if you just do print(np array), each element is a new line
@@ -139,8 +169,11 @@ def initialize_arrays():
     last_whole_days = np.array(np.zeros((R,1), dtype=int))
     first_half_days = np.array(np.zeros((R,1), dtype=int))
 
+#********************************************
 
-#*******************************************
+
+
+#********************************************
 #Displays a visual progress bar during simulation execution.
 #Called once per simulation inside run_simulations().
 #Calculates percent completion and updates the same console line in-place.
@@ -154,9 +187,14 @@ def loading_screen(sim, R):
     bar = "█" * filled + "░" * empty
     percent = int(progress * 100)
 
-    print(f"\r{bar}] {percent}%", end="")
+    print(f"\r{bar}  ---  {percent}%", end="")
 
-#*******************************************
+
+#********************************************
+
+
+
+#********************************************
 #Runs R simulations, outputting a loading screen as it goes
 #Globals Used: R, simulation_totals, simulation_averages
 def run_simulations():
@@ -176,9 +214,12 @@ def run_simulations():
 
 #*******************************************
 #Short helper function used for readability
-#Returns probability of grabbing a whole pill
+#Returns probability of grabbing a whole pill,
+# or returns 0 if there are no pills
 #Parameters are the number of whole and half pills
-def get_whole_probability(whole_total, half_total):
+def get_probability(whole_total, half_total):
+    if whole_total + half_total == 0:
+        return 0
     return whole_total/(whole_total + half_total)
 
 #*******************************************
@@ -197,7 +238,7 @@ def single_simulation(sim = 0):
     simulation_totals[0][0] += N   # Day 0: start with N whole pills
 
     for day in range(1, 2*N + 1):
-        whole_probability = get_whole_probability(whole_total, half_total)
+        whole_probability = get_probability(whole_total, half_total)
         pill_grab = np.random.random()
         if pill_grab < whole_probability:
             whole_total -= 1
@@ -217,12 +258,6 @@ def single_simulation(sim = 0):
 #*******************************************
 
 
-
-#REMOVE THIS NOTE LATER
-#This was Riddhi's function from statistics.py
-#Tressa moved it here because we need to keep everything
-#in the same file. Renamed stuff just because it can
-#be used generically as a mode function
 
 #*******************************************
 #Calculates array mode
@@ -253,22 +288,6 @@ def array_stats(array):
 #********************************************
 
 
-#********************************************
-#Output statistics related to question 2
-#Globals Used: last_whole_days, first_half_days
-def question2_stats():
-    print("Question 2 statistics:\n-------------------------\n")
-    print("LAST WHOLE DAY ANALYSIS\n")
-    array_stats(last_whole_days)
-    #Prompt y/n to see histogram of last whole
-
-    print("\n\nFIRST HALF DAY ANALYSIS\n")
-    array_stats(first_half_days)
-    #Prompt y/n to see histogram of first half
-
-#********************************************
-
-
 
 # *******************************************
 # Helper function used to read input for variables given a prompt & verifies the input is within bounds provided.
@@ -293,7 +312,8 @@ def verify_input(prompt, upper_limit, allow_exit=False):
                 print(f"Input must be between 1 and {upper_limit}, try again.")
         except ValueError:
             print("Input must be numeric, try again.")
-# *******************************************
+
+# ******************************************
 
 
 
@@ -318,9 +338,18 @@ def get_R():
     return repetitions
 
 # *******************************************
+
+
+
+
+
 # -------------------------
 # Q1 FUNCTIONS
 # -------------------------
+
+#*******************************************
+#Plots average whole and half pill values
+#Globals Used: N, simulation_averages
 def plot_q1_averages():
     days = np.arange(0, 2*N + 1)
 
@@ -337,9 +366,22 @@ def plot_q1_averages():
     plt.legend()
     plt.show()
 
+# ******************************************
+
+
+
+#*******************************************
+#Outputs statistical information to the user
+# with regard to question 1.
+#Uses verify_input to verify the value of the user's
+# chosen day to analyze. Also uses get_probability
+# to calculate the probability of grabbing a
+# given pill type
+#Globals used: N, simulation_averages
 def q1_console():
     # opening prompt for Q1
-    print(f"Each simulation started with {N} whole pills on day 0 and lasted {2*N} days. To see results for average"
+    print(f"\n-------------------------------------------\n"
+          f"Each simulation started with {N} whole pills on day 0 and lasted {2*N} days. To see results for average"
           f"\n half/whole pills on a given day, follow the prompt below. Press 'ENTER' to return to the results menu.\n")
 
     # loop until user presses enter to exit
@@ -354,79 +396,132 @@ def q1_console():
                 break
             case _:
                 # day chosen was between 0..2*N
+                whole_total = simulation_averages[day][0]
+                half_total = simulation_averages[day][1]
                 print(f"\nDay {day} Average Pill Count:\n"
-                      f"   > Whole Pills = {simulation_averages[day][0]}\n"
-                      f"   > Half Pills = {simulation_averages[day][1]}\n")
+                      f"   > Whole Pills => {whole_total}\n"
+                      f"   > Approximate chance of grabbing a whole pill today =>"
+                      f" {get_probability(whole_total, half_total) * 100:.0f}%\n\n"
+                      f"   > Half Pills => {half_total}\n"
+                      f"   > Approximate chance of grabbing a half pill today =>"
+                      f" {get_probability(half_total, whole_total) * 100:.0f}%\n\n")
+
+# ******************************************
+
+
+
+
 
 # -------------------------
 # Q2 FUNCTIONS
 # -------------------------
 
+#*******************************************
+#Plots a histogram of the last whole days,
+# followed by doing the same for first half days
+#Globals Used: last_whole_days, first_half_days
 def plot_q2_histograms():
     plt.figure()
-    plt.hist(last_whole_days.flatten(), bins=20)
+    plt.hist(last_whole_days.flatten(), linewidth="1", edgecolor="black", bins=20)
     plt.title("Histogram of Last Whole Pill Day")
     plt.xlabel("Day")
     plt.ylabel("Frequency")
     plt.show()
 
     plt.figure()
-    plt.hist(first_half_days.flatten(), bins=20)
+    plt.hist(first_half_days.flatten(), linewidth="1", edgecolor="black", bins=20)
     plt.title("Histogram of First Half Pill Day")
     plt.xlabel("Day")
     plt.ylabel("Frequency")
     plt.show()
 
+#********************************************
+
+
+
+#********************************************
+#Output statistics related to question 2
+#Globals Used: last_whole_days, first_half_days
 def q2_console():
-    last_mode = array_mode(last_whole_days)
-    first_mode = array_mode(first_half_days)
+    print("Question 2 statistics:\n-------------------------\n")
+    print("LAST WHOLE DAY ANALYSIS\n")
+    array_stats(last_whole_days)
 
-    print("Whole pills most often ran out on day:", last_mode)
-    print("Half pills were most often first taken on day:", first_mode)
+    print("\n\nFIRST HALF DAY ANALYSIS\n")
+    array_stats(first_half_days)
 
-    input("Press ENTER to return...")
+    input("\n\nPress ENTER to return...")
+
+#********************************************
+
+
+
+
 
 # -------------------------
 # Q3 FUNCTIONS
 # -------------------------
 
+#********************************************
+#Plots line of best fit for the average
+# number of whole pills over time, and
+# outputs the slope of that line as the
+# rate whole pills were lost
+#Globals used: N, simulation_averages
 def plot_q3_regression():
     days = np.arange(0, 2*N + 1)
     avg_whole = simulation_averages[:, 0]
 
     # Scatter
     plt.figure()
-    plt.scatter(days, avg_whole)
+    plt.scatter(days, avg_whole, color="salmon", label="Average Whole Pills")
 
-    # Line of best fit
+    # Line of best fit (m and b as in y = mx + b
     m, b = np.polyfit(days, avg_whole, 1)
-    plt.plot(days, m*days + b)
+    r = np.corrcoef(days, avg_whole)[0, 1]
+    r2 = r**2
+
+    plt.plot(days, m*days + b, label="Line of Best Fit")
 
     plt.xlabel("Day")
     plt.ylabel("Average Whole Pills")
-    plt.title("Whole Pills Decrease Over Time")
+    plt.suptitle("Whole Pills Decrease Over Time")
+    plt.title(f"R\u00b2 = {r2:.2f}", fontsize=9)
+    plt.legend()
     plt.show()
 
-    print("Whole pills were taken at a rate of approximately",
+    print("Whole pills were lost at a rate of approximately",
           round(abs(m), 4), "pills per day.")
-    input("Press ENTER to return...")
+    input("\nPress ENTER to return...")
+
+#********************************************
+
+
+
+
 
 # -------------------------
 # RESULTS MENU
 # -------------------------
+
+#********************************************
+#Outputs a prompt which includes all 3 questions,
+# then takes user input on what question they would
+# like to examine further
 def results_menu():
     # loop until user presses enter to exit
     while True:
         # opening prompt
-        print("""====================== Results Menu ======================
-Select a question below (1..3) to see the simulation's results:
-  1.) What are the expected number of whole & half pills on a given day?
-  2.) Which day is most likely we run out of whole pills & which day is most likely the first half pill is taken?
-  3.) At what average rate were whole pills taken per day?
+        print("""\n\n====================== Results Menu ======================
+Select a question below (1-3) to see the simulation's results:
+  1.) On a given day, how many whole and half pills can we expect to have left?
+  2.) Which day are we most likely to run out of whole pills 
+      and which are we most likely to take our first half pill??
+  3.) What is the average rate that we lose whole pills?
   Or press 'ENTER' to exit (leave blank)\n""")
 
         # get input using verify_input helper with prompt for options 0..3
-        choice = verify_input("Enter an option (1..3): ",3, True)
+        choice = verify_input("Enter an option (1-3): ",3, True)
 
         # select appropriate helper to display results
         match choice:
@@ -436,33 +531,44 @@ Select a question below (1..3) to see the simulation's results:
                 # alert user a graph was generated
                 print("\n > Graph Generated: \"Average Whole and Half Pills Per Day\"\n"
                       "   This graph displays the average number of whole & half pills remaining for each day across all"
-                        " simulations.\n   [KEY] X-axis: Day, Y-axis: Average Pill Count\n")
+                      " simulations.\n   [KEY] X-axis: Day, Y-axis: Average Pill Count\n"
+                      "\nExit the graph window to continue.\n")
 
                 plot_q1_averages()  # generate graph
                 q1_console()    # prompt user for day-specific results
+
             case 2:
                 # alert user 2 graphs were generated
-                print("\n > Graph Generated: \"Histogram of First Half Pill Day\"\n"
-                      "   This graph displays the frequencies of the first day a half pill was taken for each simulation\n"
-                      "   [KEY] X-axis: Day, Y-axis: Frequency")
                 print("\n > Graph Generated: \"Histogram of Last Whole Pill Day\"\n"
                       "   This graph displays the frequencies of the last day a whole pill was taken in each simulation\n"
                       "   [KEY] X-axis: Day, Y-axis: Frequency\n")
+                print("\n > Graph Generated: \"Histogram of First Half Pill Day\"\n"
+                      "   This graph displays the frequencies of the first day a half pill was taken for each simulation\n"
+                      "   [KEY] X-axis: Day, Y-axis: Frequency\n"
+                      "\nExit the graph window to continue.\n")
 
                 plot_q2_histograms() # generate graphs
                 q2_console()  # print results to console
+
             case 3:
                 # alert user a graph was generated
                 print("\n > Graph Generated: \"Whole Pills Decrease Over Time\"\n"
                       "   This graph displays the average number of whole pills remaining per day across all simulations\n"
                       "     with a line of best fit that displays the rate of reduction\n"
-                      "   [KEY] X-axis: Day, Y-axis: Avg # Whole Pills Left\n")
+                      "   [KEY] X-axis: Day, Y-axis: Avg # Whole Pills Left\n"
+                      "\nExit the graph window to continue.\n")
+
 
                 plot_q3_regression() # generate graph & print rate
 
+#********************************************
+
+
 
 #*******************************************
-#main (obviously)
+#Main function. Gets N and R from user, initializes
+# our arrays, runs simulations, then calls results_menu
+#Globals used: N, R
 def main():
     print("======== Welcome to the Pill Program! ========")
     print("""This program will create a pill bottle containing 'N' pills and simulate emptying it 'R' times!
@@ -474,22 +580,22 @@ dose, and the other half should be returned. On the last day our bottle will be 
 
 After running the simulation a number of times (R), statistics will be provided regarding the bottle's contents in order
 to answer the following questions:
-    1. What are the expected number of whole & half pills on a given day?
-    2. Which day is most likely we run out of whole pills & which day is most likely the first half pill is taken?
-    3. At what average rate were whole pills taken per day?
+      1.) On a given day, how many whole and half pills can we expect to have left?
+      2.) Which day are we most likely to run out of whole pills 
+          and which are we most likely to take our first half pill?
+      3.) What is the average rate that we lose whole pills?
 
 Follow the prompts to begin the simulation. Results to the above questions may be selected from at the end.\n""")
     global N, R
     N = get_N()
     R = get_R()
+
     initialize_arrays()
     run_simulations()
-
-    # question2_stats()   # merge this to q2_console()?
     results_menu()
 
 #*******************************************
 
-
+#call main on program running
 if __name__ == "__main__":
     main()
