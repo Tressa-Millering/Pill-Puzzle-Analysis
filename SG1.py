@@ -108,8 +108,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-
 # ----------------------------------
 # GLOBAL VARIABLES/DATA STRUCTURES
 # ----------------------------------
@@ -119,21 +117,20 @@ import matplotlib.pyplot as plt
 #but unknown until runtime.
 
 #ints
-N = 0   #Pill count. 1 - 1k inclusive
-R = 0   #Simulation count. 1 - 10k inclusive
+N = 0  #Pill count. 1 - 1k inclusive
+R = 0  #Simulation count. 1 - 10k inclusive
 
 #Arrays
-simulation_totals = None    #Keeps a running total of whole pill and half pill counts per day
+simulation_totals = None  #Keeps a running total of whole pill and half pill counts per day
 simulation_averages = None  #Stores the average whole/half pill total after finishing the simulations
-last_whole_days = None      #Keeps track of each day that whole pills ran out
-first_half_days = None      #Keeps track of each day that half pills were selected
+last_whole_days = None  #Keeps track of each day that whole pills ran out
+first_half_days = None  #Keeps track of each day that half pills were selected
 
 #Sets global style settings for later plots
 plt.style.use('bmh')
+
+
 #********************************************
-
-
-
 
 
 # -------------------------
@@ -155,8 +152,8 @@ def print_array(array, length, label=""):
         print(array[_], end=" ")
     print("\n")
 
-#*******************************************
 
+#*******************************************
 
 
 #*******************************************
@@ -165,12 +162,12 @@ def print_array(array, length, label=""):
 #Globals Used: N, R, simulation_totals, last_whole_days, first_half_days
 def initialize_arrays():
     global simulation_totals, last_whole_days, first_half_days
-    simulation_totals = np.array(np.zeros((2*N + 1, 2), dtype=int))
-    last_whole_days = np.array(np.zeros((R,1), dtype=int))
-    first_half_days = np.array(np.zeros((R,1), dtype=int))
+    simulation_totals = np.array(np.zeros((2 * N + 1, 2), dtype=int))
+    last_whole_days = np.array(np.zeros((R, 1), dtype=int))
+    first_half_days = np.array(np.zeros((R, 1), dtype=int))
+
 
 #********************************************
-
 
 
 #********************************************
@@ -193,7 +190,6 @@ def loading_screen(sim, R):
 #********************************************
 
 
-
 #********************************************
 #Runs R simulations, outputting a loading screen as it goes
 #Globals Used: R, simulation_totals, simulation_averages
@@ -208,8 +204,8 @@ def run_simulations():
     simulation_averages = np.divide(simulation_totals, R)
     print("\nSimulations complete!\n")
 
-#*******************************************
 
+#*******************************************
 
 
 #*******************************************
@@ -220,24 +216,24 @@ def run_simulations():
 def get_probability(whole_total, half_total):
     if whole_total + half_total == 0:
         return 0
-    return whole_total/(whole_total + half_total)
+    return whole_total / (whole_total + half_total)
+
 
 #*******************************************
-
 
 
 #*******************************************
 #Run a single simulation of emptying the pill bottle.
 #The parameter 'Sim' represents the current simulation being run
 #Globals Used: N, simulation_totals, last_whole_days, first_half_days
-def single_simulation(sim = 0):
+def single_simulation(sim=0):
     first_half_out = False
     whole_total = N
     half_total = 0
 
-    simulation_totals[0][0] += N   # Day 0: start with N whole pills
+    simulation_totals[0][0] += N  # Day 0: start with N whole pills
 
-    for day in range(1, 2*N + 1):
+    for day in range(1, 2 * N + 1):
         whole_probability = get_probability(whole_total, half_total)
         pill_grab = np.random.random()
         if pill_grab < whole_probability:
@@ -258,7 +254,6 @@ def single_simulation(sim = 0):
 #*******************************************
 
 
-
 #*******************************************
 #Calculates array mode
 #Primarily used for last whole day and first
@@ -271,8 +266,8 @@ def array_mode(array):
 
     return mode
 
-#********************************************
 
+#********************************************
 
 
 #********************************************
@@ -285,8 +280,8 @@ def array_stats(array):
     print("\tSmallest Mode Day: ", array_mode(array))
     print("\tLatest Day:  ", np.max(array))
 
-#********************************************
 
+#********************************************
 
 
 # *******************************************
@@ -313,8 +308,8 @@ def verify_input(prompt, upper_limit, allow_exit=False):
         except ValueError:
             print("Input must be numeric, try again.")
 
-# ******************************************
 
+# ******************************************
 
 
 #*******************************************
@@ -325,8 +320,8 @@ def get_N():
     pills = verify_input("Enter N (1 .. 1000): ", 1000)
     return pills
 
-#*******************************************
 
+#*******************************************
 
 
 # *******************************************
@@ -334,13 +329,11 @@ def get_N():
 # uses helper function verify_input with an appropriate prompt for R as well as an upper limit of 10000
 def get_R():
     print("Provide a number of R repetitions to run the simulation for.")
-    repetitions = verify_input("Enter R (1 .. 10000): ",10000)
+    repetitions = verify_input("Enter R (1 .. 10000): ", 10000)
     return repetitions
 
+
 # *******************************************
-
-
-
 
 
 # -------------------------
@@ -351,7 +344,8 @@ def get_R():
 #Plots average whole and half pill values
 #Globals Used: N, simulation_averages
 def plot_q1_averages():
-    days = np.arange(0, 2*N + 1)
+
+    days = np.arange(0, 2 * N + 1)
 
     avg_whole = simulation_averages[:, 0]
     avg_half = simulation_averages[:, 1]
@@ -360,14 +354,17 @@ def plot_q1_averages():
     plt.plot(days, avg_whole, label="Average Whole Pills")
     plt.plot(days, avg_half, label="Average Half Pills")
 
+    plt.title("Average Number of Whole and Half Pills per Day")
     plt.xlabel("Day")
-    plt.ylabel("Average Pill Count")
-    plt.title("Average Whole and Half Pills Per Day")
+    plt.ylabel("Average Number of Pills")
+
     plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
     plt.show()
 
-# ******************************************
 
+# ******************************************
 
 
 #*******************************************
@@ -381,14 +378,14 @@ def plot_q1_averages():
 def q1_console():
     # opening prompt for Q1
     print(f"\n-------------------------------------------\n"
-          f"Each simulation started with {N} whole pills on day 0 and lasted {2*N} days. To see results for average"
+          f"Each simulation started with {N} whole pills on day 0 and lasted {2 * N} days. To see results for average"
           f"\n half/whole pills on a given day, follow the prompt below. Press 'ENTER' to return to the results menu.\n")
 
     # loop until user presses enter to exit
     while True:
         # prompt user for a day between 0 and 2*N, press 'ENTER' to exit
-        day_prompt = f"Enter a Day (1..{2*N}), or press 'ENTER' (leave blank) to return: "
-        day = verify_input(day_prompt, 2*N, True)
+        day_prompt = f"Enter a Day (1..{2 * N}), or press 'ENTER' (leave blank) to return: "
+        day = verify_input(day_prompt, 2 * N, True)
 
         match day:
             case "":
@@ -406,10 +403,8 @@ def q1_console():
                       f"   > Approximate chance of grabbing a half pill today =>"
                       f" {get_probability(half_total, whole_total) * 100:.0f}%\n\n")
 
+
 # ******************************************
-
-
-
 
 
 # -------------------------
@@ -421,22 +416,22 @@ def q1_console():
 # followed by doing the same for first half days
 #Globals Used: last_whole_days, first_half_days
 def plot_q2_histograms():
-    plt.figure()
-    plt.hist(last_whole_days.flatten(), linewidth="1", edgecolor="black", bins=20)
-    plt.title("Histogram of Last Whole Pill Day")
-    plt.xlabel("Day")
-    plt.ylabel("Frequency")
-    plt.show()
 
     plt.figure()
-    plt.hist(first_half_days.flatten(), linewidth="1", edgecolor="black", bins=20)
-    plt.title("Histogram of First Half Pill Day")
+
+    plt.hist(last_whole_days.flatten(), bins=30, alpha=0.7, label="Last Whole Pill Day")
+    plt.hist(first_half_days.flatten(), bins=30, alpha=0.7, label="First Half Pill Day")
+
+    plt.title("Distribution of Pill Events Across Simulations")
     plt.xlabel("Day")
     plt.ylabel("Frequency")
+    plt.legend()
+    plt.grid(True)
+
     plt.show()
+
 
 #********************************************
-
 
 
 #********************************************
@@ -452,10 +447,8 @@ def q2_console():
 
     input("\n\nPress ENTER to return...")
 
+
 #********************************************
-
-
-
 
 
 # -------------------------
@@ -469,35 +462,25 @@ def q2_console():
 # rate whole pills were lost
 #Globals used: N, simulation_averages
 def plot_q3_regression():
+
     days = np.arange(0, 2*N + 1)
-    avg_whole = simulation_averages[:, 0]
+    avg_whole = simulation_averages[:,0]
 
-    # Scatter
-    plt.figure()
-    plt.scatter(days, avg_whole, color="salmon", label="Average Whole Pills")
+    slope, intercept = np.polyfit(days, avg_whole, 1)
+    line = slope * days + intercept
 
-    # Line of best fit (m and b as in y = mx + b
-    m, b = np.polyfit(days, avg_whole, 1)
-    r = np.corrcoef(days, avg_whole)[0, 1]
-    r2 = r**2
+    plt.scatter(days, avg_whole, label="Simulation Data")
+    plt.plot(days, line, label="Line of Best Fit")
 
-    plt.plot(days, m*days + b, label="Line of Best Fit")
-
+    plt.title("Average Whole Pills Over Time")
     plt.xlabel("Day")
     plt.ylabel("Average Whole Pills")
-    plt.suptitle("Whole Pills Decrease Over Time")
-    plt.title(f"R\u00b2 = {r2:.2f}", fontsize=9)
     plt.legend()
+    plt.grid(True)
+
     plt.show()
 
-    print("Whole pills were lost at a rate of approximately",
-          round(abs(m), 4), "pills per day.")
-    input("\nPress ENTER to return...")
-
 #********************************************
-
-
-
 
 
 # -------------------------
@@ -521,7 +504,7 @@ Select a question below (1-3) to see the simulation's results:
   Or press 'ENTER' to exit (leave blank)\n""")
 
         # get input using verify_input helper with prompt for options 0..3
-        choice = verify_input("Enter an option (1-3): ",3, True)
+        choice = verify_input("Enter an option (1-3): ", 3, True)
 
         # select appropriate helper to display results
         match choice:
@@ -535,7 +518,7 @@ Select a question below (1-3) to see the simulation's results:
                       "\nExit the graph window to continue.\n")
 
                 plot_q1_averages()  # generate graph
-                q1_console()    # prompt user for day-specific results
+                q1_console()  # prompt user for day-specific results
 
             case 2:
                 # alert user 2 graphs were generated
@@ -547,7 +530,7 @@ Select a question below (1-3) to see the simulation's results:
                       "   [KEY] X-axis: Day, Y-axis: Frequency\n"
                       "\nExit the graph window to continue.\n")
 
-                plot_q2_histograms() # generate graphs
+                plot_q2_histograms()  # generate graphs
                 q2_console()  # print results to console
 
             case 3:
@@ -558,11 +541,10 @@ Select a question below (1-3) to see the simulation's results:
                       "   [KEY] X-axis: Day, Y-axis: Avg # Whole Pills Left\n"
                       "\nExit the graph window to continue.\n")
 
+                plot_q3_regression()  # generate graph & print rate
 
-                plot_q3_regression() # generate graph & print rate
 
 #********************************************
-
 
 
 #*******************************************
@@ -593,6 +575,7 @@ Follow the prompts to begin the simulation. Results to the above questions may b
     initialize_arrays()
     run_simulations()
     results_menu()
+
 
 #*******************************************
 
