@@ -391,19 +391,20 @@ def q1_console():
 def plot_q2_histograms():
 
     plt.figure()
-
-    plt.hist(last_whole_days.flatten(), bins=30, alpha=0.7, label="Last Whole Pill Day")
-    plt.hist(first_half_days.flatten(), bins=30, alpha=0.7, label="First Half Pill Day")
-
-    plt.title("Distribution of Pill Events Across Simulations")
+    plt.hist(last_whole_days.flatten(), linewidth="1", edgecolor="black", color="salmon", bins=20)
+    plt.title("Frequency of Days the Last Whole Pill was Taken")
     plt.xlabel("Day")
     plt.ylabel("Frequency")
-    plt.legend()
     plt.grid(True)
-
     plt.show()
 
-
+    plt.figure()
+    plt.hist(first_half_days.flatten(), linewidth="1", edgecolor="black", color="skyblue", bins=20)
+    plt.title("Frequency of Days the First Half Pill was Taken")
+    plt.xlabel("Day")
+    plt.ylabel("Frequency")
+    plt.grid(True)
+    plt.show()
 
 #********************************************
 #Displays results of last whole pill & first half pill analysis with both min/max/avg spread & mode
@@ -421,7 +422,7 @@ def q2_console():
     first_half_mode = array_stats(first_half_days)
 
     # output answers to question 2
-    print(f"\nWhole pills are most likely to run out on day {last_whole_mode}\n"
+    print(f"\nWhole pills are most likely to run out earliest on day {last_whole_mode}\n"
           f"Half pills are most likely to first be selected on day {first_half_mode}\n")
 
     input("Press ENTER to return...")
@@ -440,22 +441,28 @@ def q2_console():
 #Globals used: N, simulation_averages
 def plot_q3_regression():
 
-    days = np.arange(0, 2*N + 1)
-    avg_whole = simulation_averages[:,0]
+    days=np.arange(0, 2*N + 1)
+    avg_whole = simulation_averages[:, 0]
 
-    slope, intercept = np.polyfit(days, avg_whole, 1)
-    line = slope * days + intercept
+    # Scatterplot
+    plt.figure()
+    plt.scatter(days, avg_whole, color="salmon", label="Average Whole Pills")
 
-    plt.scatter(days, avg_whole, label="Simulation Data")
-    plt.plot(days, line, label="Line of Best Fit")
+    # Line of best fit (m and b as in y = mx + b)
+    m, b = np.polyfit(days, avg_whole, 1)
+    r = np.corrcoef(days, avg_whole)[0, 1]
+    r2 = r**2
 
-    plt.title("Average Whole Pills Over Time")
-    plt.xlabel("Day")
-    plt.ylabel("Average Whole Pills")
+    plt.plot(days, m*days + b, label="Best Fit Line of Whole Pill Reduction")
+
+    plt.suptitle("Whole Pills Decrease Over Time")
+    plt.title(f"R\u00b2 = {r2:.2f}", fontsize=9)
     plt.legend()
-    plt.grid(True)
-
     plt.show()
+
+    print("Whole pills were lost at a rate of approximately",
+          round(abs(m), 4), "pills per day.\n")
+    input("Press ENTER to return...")
 
 
 
@@ -492,7 +499,7 @@ Select a question below (1-3) to see the simulation's results:
                 print("\n > Graph Generated: \"Average Whole and Half Pills Per Day\"\n"
                       "   This graph displays the average number of whole & half pills remaining for each day across all"
                       " simulations.\n   [KEY] X-axis: Day, Y-axis: Average Pill Count\n"
-                      "\n(Exit the graph window to continue)\n")
+                      "\n(See graph in new window)\n")
 
                 plot_q1_averages()  # generate graph
                 q1_console()  # prompt user for day-specific results
@@ -500,13 +507,13 @@ Select a question below (1-3) to see the simulation's results:
             case 2:
                 print(f"\n-------------------------------------------")
                 # alert user 2 graphs were generated
-                print("\n > Graph Generated: \"Histogram of Last Whole Pill Day\"\n"
+                print("\n > Graph Generated: \"Frequency of Days the Last Whole Pill was Taken\" (red)\n"
                       "   This graph displays the frequencies of the last day a whole pill was taken in each simulation\n"
                       "   [KEY] X-axis: Day, Y-axis: Frequency\n")
-                print("\n > Graph Generated: \"Histogram of First Half Pill Day\"\n"
+                print("\n > Graph Generated: \"Frequency of Days the First Half Pill was Taken\" (blue)\n"
                       "   This graph displays the frequencies of the first day a half pill was taken for each simulation\n"
                       "   [KEY] X-axis: Day, Y-axis: Frequency\n"
-                      "\n(Exit the graph window to continue)\n")
+                      "\n(See graph in new window)\n")
 
                 plot_q2_histograms()  # generate graphs
                 q2_console()  # print results to console
@@ -518,7 +525,7 @@ Select a question below (1-3) to see the simulation's results:
                       "   This graph displays the average number of whole pills remaining per day across all simulations\n"
                       "     with a line of best fit that displays the rate of reduction\n"
                       "   [KEY] X-axis: Day, Y-axis: Avg # Whole Pills Left\n"
-                      "\n(Exit the graph window to continue)")
+                      "\n(See graph in new window)\n")
 
                 plot_q3_regression()  # generate graph & print rate
 
