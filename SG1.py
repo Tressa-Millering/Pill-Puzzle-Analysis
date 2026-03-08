@@ -3,6 +3,9 @@
 #   IDE - Primarily programmed using PyCharm for its
 #         version control tools, later tested in Thonny
 #
+#   Python Packages REQUIRED - (must be installed with Thonny IDE, "Tools>Manage Packages")
+#       - NumPy
+#       - Matplotlib
 #
 #   Authors -
 #       - Riddhi Acharya
@@ -14,6 +17,12 @@
 #
 #   Important Dates -
 #       Program started 02/2/2026
+#       Initial Design Drafted 02/23/2026
+#       Basic Simulation Implemented 02/24/2026
+#       Basic Visualization Implemented 02/27/2026
+#       Design Revisions 03/02/2026
+#       Revisions Implemented 03/03/2026
+#       Test Plan Revisions & Testing 03/07/2026
 #       Program submitted 03/10/2026
 #
 #
