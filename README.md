@@ -1,4 +1,5 @@
-# sg1-pill-puzzle
+# Pill Puzzle Analysis
+> Note: This is a fork of the original working repository, as the original used my academic account. While I have made changes to the README and removed some of our test files, the actual script remains the same. 
 
 ## Authors
 
@@ -14,13 +15,13 @@
 
 ## Project Motivation
 
-The goal of this project was to collaboratively design, implement and test a software solution to the classic "[Pill Puzzle](https://en.wikipedia.org/wiki/Pill_puzzle)" probability problem. SG1 is a simulation-based (brute force) solution that uses visualization and statistical analysis to explore the results.
+The goal of this project was to collaboratively design, implement and test a software solution to the classic "[Pill Puzzle](https://en.wikipedia.org/wiki/Pill_puzzle)" probability problem. The script is a simulation-based (brute force) solution that uses visualization and statistical analysis to explore the results.
 
 > This project was developed as a group assignment for CS 4500 – Introduction to the Software Profession at the University of Missouri–St. Louis (UMSL).
 
 ## Project Description
 
-SG1 is an interactive Python 3 program designed to run in the Thonny IDE, but developed with PyCharm. The `NumPy` and `matplotlib` packages are required for visuals and statistical analysis.
+This is an interactive Python 3 script designed to run in the Thonny IDE, but developed with PyCharm. The `NumPy` and `matplotlib` packages are required for visuals and statistical analysis.
 
 The pill puzzle begins with **N whole pills** in a bottle. A patient must take **half a pill each day**, but the pills are initially whole. Each day a pill is randomly selected from the bottle:
 
@@ -30,7 +31,7 @@ The pill puzzle begins with **N whole pills** in a bottle. A patient must take *
 
 Since each pill is eventually split in half, this process lasts exactly **2 \* N days**, ending with an empty bottle.
 
-SG1 runs the simulation **R times** and aggregates the results to estimate statistical properties of the system.
+  The simulation is run **R times** and aggregates the results to estimate statistical properties of the system.
 
 After the simulations complete, the program allows the user to explore the results through an interactive menu which answers the following questions:
 
@@ -48,7 +49,7 @@ To help visualize these results, the program generates several plots using Matpl
 
 ## Data Structures Used
 
-SG1 primarily relies on NumPy arrays to store simulation results & perform calculations.
+The script primarily relies on NumPy arrays to store simulation results & perform calculations.
 
 **Global Structures:**
 
@@ -92,15 +93,15 @@ pip install numpy matplotlib
 
 #### Running the Program
 
-SG1 is designed to run in Thonny IDE
+The script is designed to run in Thonny IDE
 
-1. open `SG1.py` in Thonny
+1. open `Pill_Puzzle_Analysis.py` in Thonny
 2. click the green Run button or press `f5`
 
 To run from the command line, use:
 
 ```
-python SG1.py
+python Pill_Puzzle_Analysis.py
 ```
 
 #### Workflow
